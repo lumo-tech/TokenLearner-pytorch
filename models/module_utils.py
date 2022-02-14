@@ -130,21 +130,33 @@ class LongTensorMemoryBank(torch.Tensor):
 
 
 def pick_model_name(model_name) -> nn.Module:
-    from . import vit_tokenlearner
+    from . import vit_tokenlearner, vit
 
-    model = vit_tokenlearner.ViT(
-        image_size=96,
-        num_tokens=8,
-        fuse=False,
-        v11=True,
-        tokenlearner_loc=3,
-        patch_size=16,
-        hidden_size=768,
-        depth=6,
-        heads=16,
-        mlp_dim=2048,
-        dropout=0.1,
-        emb_dropout=0.1
-    )
+    if model_name in {'vit'}:
+        model = vit.ViT(
+            image_size=96,
+            patch_size=16,
+            dim=768,
+            depth=6,
+            heads=16,
+            mlp_dim=2048,
+            dropout=0.1,
+            emb_dropout=0.1
+        )
+    elif model_name in {'tokenlearner'}:
+        model = vit_tokenlearner.ViT(
+            image_size=96,
+            num_tokens=8,
+            fuse=False,
+            v11=True,
+            tokenlearner_loc=3,
+            patch_size=16,
+            hidden_size=768,
+            depth=6,
+            heads=16,
+            mlp_dim=2048,
+            dropout=0.1,
+            emb_dropout=0.1
+        )
 
     return model
