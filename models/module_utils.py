@@ -158,5 +158,7 @@ def pick_model_name(model_name) -> nn.Module:
             dropout=0.1,
             emb_dropout=0.1
         )
+    else:
+        raise NotImplementedError()
 
     return model

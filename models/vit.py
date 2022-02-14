@@ -84,7 +84,7 @@ class Transformer(nn.Module):
             x = ff(x) + x
         return x
 
-
+from lumo.contrib.nn.loss import contrastive_loss2
 class ViT(nn.Module):
     def __init__(self, *, image_size, patch_size, dim, depth, heads, mlp_dim, pool='cls', channels=3,
                  dim_head=64, dropout=0., emb_dropout=0.):
