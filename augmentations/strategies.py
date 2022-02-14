@@ -13,9 +13,9 @@ def read(x):
     return Image.open(x).convert('RGB')
 
 
-def basic(mean, std, size=32, resize=None):
+def basic(mean, std, size=32):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         transforms.CenterCrop(size),
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
@@ -30,9 +30,9 @@ def none(mean, std, size=32):
     ])
 
 
-def standard(mean, std, size=32, resize=None):
+def standard(mean, std, size=32):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         transforms.RandomCrop(size, padding=size // 8),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
@@ -40,9 +40,9 @@ def standard(mean, std, size=32, resize=None):
     ])
 
 
-def standard_resize(mean, std, size=32, resize=None):
+def standard_resize(mean, std, size=32):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         transforms.RandomCrop(size, padding=4),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
@@ -50,9 +50,9 @@ def standard_resize(mean, std, size=32, resize=None):
     ])
 
 
-def standard_rotate(mean, std, size=32, resize=None):
+def standard_rotate(mean, std, size=32):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         transforms.RandomCrop(size, padding=4),
         RandomRotation(90),
         transforms.RandomHorizontalFlip(),
@@ -70,9 +70,9 @@ def rotate(mean, std, size=32, v=0):
     ])
 
 
-def standard_multi_crop(mean, std, size=32, index=0, resize=None):
+def standard_multi_crop(mean, std, size=32, index=0):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         MultiCrop(index=index, size=size),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
@@ -80,9 +80,9 @@ def standard_multi_crop(mean, std, size=32, index=0, resize=None):
     ])
 
 
-def simclr(mean, std, size=32, scale=[0.2, 1.0], resize=None):
+def simclr(mean, std, size=32, scale=[0.2, 1.0]):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         transforms.RandomResizedCrop(size, scale=scale),
         transforms.RandomHorizontalFlip(),
         transforms.RandomApply([
@@ -94,9 +94,9 @@ def simclr(mean, std, size=32, scale=[0.2, 1.0], resize=None):
     ])
 
 
-def simclr_randmask(mean, std, size=32, scale=[0.2, 1.0], ratio=0.5, resize=None):
+def simclr_randmask(mean, std, size=32, scale=[0.2, 1.0], ratio=0.5):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         transforms.RandomResizedCrop(size, scale=scale),
         transforms.RandomHorizontalFlip(),
         transforms.RandomApply([
@@ -109,9 +109,9 @@ def simclr_randmask(mean, std, size=32, scale=[0.2, 1.0], ratio=0.5, resize=None
     ])
 
 
-def randaugment(mean, std, size=32, resize=None):
+def randaugment(mean, std, size=32):
     return transforms.Compose([
-        AutoResize(resize),
+        AutoResize(size),
         RandAugment(3, 5),
         transforms.RandomCrop(size, padding=size // 8),
         transforms.RandomHorizontalFlip(),
