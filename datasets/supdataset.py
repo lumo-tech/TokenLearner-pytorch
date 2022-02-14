@@ -11,7 +11,6 @@ def get_train_loader(dataset_name, batch_size=64, method='default', split='train
     mean, std = mean_std_dic.get(dataset_name, mean_std_dic.get('default'))
     img_size = imgsize_dic(dataset_name)
     assert img_size is not None
-    print(img_size)
     lazy_load = dataset_name in lazy_load_ds
 
     ds = (
