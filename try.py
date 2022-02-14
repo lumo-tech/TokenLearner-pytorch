@@ -1,5 +1,5 @@
 import torch
-from vit_tokenlearner import ViT
+from models.vit_tokenlearner import ViT
 
 v = ViT(
     image_size=256,

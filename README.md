@@ -8,7 +8,7 @@ Unofficial reimplementation of TokenLearner by Google AI.
 
 ```python
 import torch
-from vit_tokenlearner import ViT
+from models.vit_tokenlearner import ViT
 
 v = ViT(
     image_size=256,
@@ -17,7 +17,6 @@ v = ViT(
     v11=True,
     tokenlearner_loc=3,
     patch_size=16,
-    num_classes=1000,
     hidden_size=768,
     depth=6,
     heads=16,

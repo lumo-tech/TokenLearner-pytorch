@@ -13,10 +13,23 @@ some type of size
  - featmap_size: int(patch_num ** 0.5)
 
 """
+from dataclasses import dataclass
+from typing import Optional, List
+
 import torch
 from torch import nn
 
 from einops import rearrange
+
+
+@dataclass()
+class VitOutputs:
+    feature_map: Optional[torch.Tensor] = None
+    feature: Optional[torch.Tensor] = None
+    hidden_states: Optional[List[torch.Tensor]] = None
+    last_hidden_state: Optional[torch.Tensor] = None
+    loss: Optional[torch.Tensor] = None
+    logits: Optional[torch.Tensor] = None
 
 
 # helpers
@@ -290,7 +303,7 @@ class ViT(nn.Module):
                  fuse,
                  v11,
                  tokenlearner_loc,
-                 num_classes, depth, heads, mlp_dim, pool='cls',
+                 depth, heads, mlp_dim, pool='cls',
                  dim_head=64, dropout=0., emb_dropout=0.):
         """
 
@@ -318,6 +331,7 @@ class ViT(nn.Module):
 
         assert pool in {'cls', 'mean'}, 'pool type must be either cls (cls token) or mean (mean pooling)'
 
+        self.feature_dim = hidden_size
         self.embedding = nn.Conv2d(3, hidden_size, (patch_size, patch_size), (patch_size, patch_size))
         self.pos_embedding = nn.Parameter(torch.randn(1, hidden_size, (image_size // patch_size) ** 2))
 
@@ -348,11 +362,7 @@ class ViT(nn.Module):
 
         self.pool = pool
         self.to_latent = nn.Identity()
-
-        self.mlp_head = nn.Sequential(
-            nn.LayerNorm(hidden_size),
-            nn.Linear(hidden_size, num_classes)
-        )
+        self.ln = nn.LayerNorm(hidden_size)
 
     def forward(self, img):
         x = self.embedding(img)  # b, hidden_size, w, h
@@ -367,4 +377,5 @@ class ViT(nn.Module):
         x = x.mean(dim=1)
 
         x = self.to_latent(x)
-        return self.mlp_head(x)
+        x = self.ln(x)
+        return x
