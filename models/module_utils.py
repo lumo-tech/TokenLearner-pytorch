@@ -133,7 +133,7 @@ def pick_model_name(model_name) -> nn.Module:
     from . import vit_tokenlearner
 
     model = vit_tokenlearner.ViT(
-        image_size=256,
+        image_size=96,
         num_tokens=8,
         fuse=False,
         v11=True,
