@@ -19,7 +19,7 @@ class BasicCEParams(SupParams):
     def __init__(self):
         super().__init__()
         self.aug_type = self.choice('basic', 'simclr', 'randaug')
-        self.model = 'vit'
+        self.model = 'tokenlearner'
         self.apply_mixup = False
         self.split_params = True
 
