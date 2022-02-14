@@ -14,5 +14,5 @@ if __name__ == '__main__':
         print('--module=')
         pprint(methods)
         exit(1)
-    module = importlib.import_module(f'track_bsl.{params.module}')
+    module = importlib.import_module(f'trainer.{params.module}')
     module.main()
