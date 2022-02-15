@@ -67,9 +67,9 @@ class BasicCETrainer(SupTrainer):
                     wd_params.append(param)
             param_list = [
                 {'params': wd_params}, {'params': non_wd_params, 'weight_decay': 0}]
-            self.optim = SAM(param_list, SGD, lr=0.01, momentum=0.9)
+            self.optim = SAM(param_list, SGD, lr=params.optim.lr, momentum=0.9)
         else:
-            self.optim = SAM(self.model.parameters(), SGD, lr=0.01, momentum=0.9)
+            self.optim = SAM(self.model.parameters(), SGD, lr=params.optim.lr, momentum=0.9)
 
         self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optim, T_max=params.epoch)
 
