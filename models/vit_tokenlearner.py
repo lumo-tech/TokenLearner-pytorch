@@ -208,19 +208,8 @@ class TokenFuser(nn.Module):
             nn.Sigmoid()
         )
 
-        # self.conv = nn.Sequential(
-        #     nn.Conv2d(3, num_toknes,
-        #               kernel_size=(1, 1), stride=(1, 1),
-        #               padding=0,
-        #               bias=False
-        #               ),
-        #     nn.Sigmoid()
-        # )
 
         self.dropout = nn.Dropout(p=dropout)
-
-        # with torch.no_grad():
-        #     nn.init.zeros_(self.linaer.weight)
 
     def forward(self, token, ori):
         """

@@ -12,6 +12,8 @@ from torch.nn import functional as F
 from models.module_utils import (pick_model_name,
                                  ViTOutputs)
 from .suptrainer import *
+from torch.optim.sgd import SGD
+from models.sam import SAM
 
 
 class BasicCEParams(SupParams):
@@ -20,9 +22,6 @@ class BasicCEParams(SupParams):
         super().__init__()
         self.aug_type = self.choice('basic', 'simclr', 'randaug')
         self.model = 'vit'
-        # self.apply_mixup = False
-        # self.split_params = True
-        self.apply_sam = True
 
 
 ParamsType = BasicCEParams
@@ -68,9 +67,10 @@ class BasicCETrainer(SupTrainer):
                     wd_params.append(param)
             param_list = [
                 {'params': wd_params}, {'params': non_wd_params, 'weight_decay': 0}]
-            self.optim = params.optim.build(param_list)
+            self.optim = SAM(param_list, SGD, lr=0.01, momentum=0.9)
         else:
-            self.optim = params.optim.build(self.model.parameters())
+            self.optim = SAM(self.model.parameters(), SGD, lr=0.01, momentum=0.9)
+
         self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optim, T_max=params.epoch)
 
         self.to_device()
@@ -96,10 +96,14 @@ class BasicCETrainer(SupTrainer):
 
         output = self.model.forward(xs)
         Lx = F.cross_entropy(output.logits, ys)
+        Lx.backward()
+        self.optim.first_step(zero_grad=True)
 
-        self.optim.zero_grad()
-        self.accelerator.backward(Lx)
-        self.optim.step()
+        output = self.model.forward(xs)
+        Lx = F.cross_entropy(output.logits, ys)
+        Lx.backward()
+        self.optim.second_step(zero_grad=True)
+
         cur_lr = self.lr_sche.apply(self.optim, self.global_step)
         if params.ema:
             self.ema_model.step()

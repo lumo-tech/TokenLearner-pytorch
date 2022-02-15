@@ -21,7 +21,7 @@ class SupParams(Params, ModelParams, DataParams):
 
         self.epoch = 200
         self.batch_size = 128
-        self.optim = self.OPTIM.create_optim('SGD', lr=0.1, weight_decay=5e-4, momentum=0.9)
+        self.optim = self.OPTIM.create_optim('SGD', lr=0.01, weight_decay=5e-4, momentum=0.9)
 
         self.ema = True
 
