@@ -101,8 +101,7 @@ class BasicCETrainer(SupTrainer):
                                 temperature=params.temperature,
                                 norm=True,
                                 query_neg=False,
-                                qk_graph=qk_graph,
-                                eye_one_in_qk=False)
+                                qk_graph=qk_graph)
         logits = output0.logits
         Lx = F.cross_entropy(logits, ys)
 
