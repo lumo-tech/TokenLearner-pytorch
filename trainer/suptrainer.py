@@ -111,12 +111,14 @@ class SupDM(DataModule):
         self.regist_dataloader_with_stage(stage, dl)
 
 
-def main(trainer_cls: ClassVar[Trainer], params_cls: ClassVar[ParamsType]):
+
+def main(trainer_cls: ClassVar[Trainer], params_cls: ClassVar[ParamsType], dm: DataModule = None):
     params = params_cls()
     params.from_args()
     trainer = trainer_cls(params)
 
-    dm = SupDM()
+    if dm is None:
+        dm = SupDM()
 
     if params.pretrain_path is not None and params.train_linear:
         trainer.load_state_dict(params.pretrain_path)
