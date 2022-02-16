@@ -137,4 +137,4 @@ class SSLDM(DataModule):
         self.regist_dataloader_with_stage(stage, dl)
 
 
-main = partial(main, BasicCETrainer, ParamsType, SSLDM)
+main = partial(main, BasicCETrainer, ParamsType, SSLDM())
